@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SistemaBancario
 {
     public class ContaEmpresarial : ContaBancaria
     {
         public double LimiteEmprestimo { get; set; }
-        public ContaEmpresarial(int numeroConta, string titular, double saldo, double limiteEmprestimo) : base(numeroConta, titular, saldo)
+
+        public ContaEmpresarial(int numeroConta, string titular, double saldo, int senha, double limiteEmprestimo)
+            : base(numeroConta, titular, saldo, senha)
         {
             LimiteEmprestimo = limiteEmprestimo;
         }
@@ -18,7 +18,8 @@ namespace SistemaBancario
             {
                 Saldo += valor;
                 LimiteEmprestimo -= valor;
-                Console.WriteLine($"Empréstimo de {valor:C} aprovado! Saldo atual da conta: {Saldo:C}");
+                Console.WriteLine($"Empréstimo de {valor:C} aprovado! Novo saldo: {Saldo:C}");
+                Console.WriteLine($"Limite de empréstimo restante: {LimiteEmprestimo:C}");
             }
             else
             {

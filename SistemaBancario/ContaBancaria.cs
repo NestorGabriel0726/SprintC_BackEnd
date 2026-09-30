@@ -1,5 +1,4 @@
-﻿using SistemaBancario;
-using System;
+﻿using System;
 
 namespace SistemaBancario
 {
@@ -8,11 +7,14 @@ namespace SistemaBancario
         public int NumeroConta { get; private set; }
         public string Titular { get; private set; }
         public double Saldo { get; protected set; }
-        public ContaBancaria(int numeroConta, string titular, double saldo)
+        public int Senha { get; private set; }
+
+        public ContaBancaria(int numeroConta, string titular, double saldo, int senha)
         {
             NumeroConta = numeroConta;
             Titular = titular;
             Saldo = saldo;
+            Senha = senha;
         }
 
         public virtual void Depositar(double valor)
@@ -37,23 +39,46 @@ namespace SistemaBancario
             }
             else
             {
-                Console.WriteLine($"Saldo insuficiente ou valor inválido!");
+                Console.WriteLine("Saldo insuficiente ou valor inválido!");
             }
         }
 
-        
+        public bool ValidarSenha(int senhaDigitada)
+        {
+            return Senha == senhaDigitada;
+        }
 
-        public void ExibirInformacoesConta()
+        public virtual void ExibirInformacoesConta()
         {
             Console.WriteLine("--- DADOS DA CONTA ---");
             Console.WriteLine($"Número da Conta: {NumeroConta}");
             Console.WriteLine($"Titular: {Titular}");
             Console.WriteLine($"Saldo: {Saldo:C}");
         }
+
+        public string MascararNome(string nome)
+        {
+            if (string.IsNullOrWhiteSpace(nome)) return "*****";
+
+            var partes = nome.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            for (int i = 0; i < partes.Length; i++)
+            {
+                string palavra = partes[i];
+                if (palavra.Length <= 2)
+                {
+                    partes[i] = new string('*', palavra.Length);
+                }
+                else
+                {
+                    partes[i] = palavra[0] + new string('*', palavra.Length - 2) + palavra[^1];
+                }
+            }
+            return string.Join(" ", partes);
+        }
+
+        public string MascararSaldo()
+        {
+            return "R$ ******";
+        }
     }
-
 }
-
-
-
-
